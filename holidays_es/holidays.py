@@ -31,6 +31,15 @@ class Province:
             f"{base}calendario-laboral-{name}-{self.year}.htm", headers=headers
         )
         self._soup = BeautifulSoup(self._page.content, "html.parser")
+        self.__check_errors()
+
+    def __check_errors(self):
+        if self._soup.find(text="Warning") is not None:
+            raise Exception("There are no records for the specified year.")
+        if self._soup.find(text="Error:") is not None:
+            raise Exception(
+                f"The name is not in the list, try one of these: {', '.join(get_provinces())}."
+            )
 
     def __tour_months(self, holiday):
         result = []
