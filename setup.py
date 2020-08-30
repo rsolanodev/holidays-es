@@ -9,7 +9,7 @@ setuptools.setup(
     description="Public holidays in Spain from 2006 to now.",
     long_description=open("README.rst").read(),
     packages=setuptools.find_packages(),
-    install_requires=[],
+    install_requires=["beautifulsoup4", "requests"],
     classifiers=[
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: MIT License",
