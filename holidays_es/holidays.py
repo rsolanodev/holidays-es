@@ -44,14 +44,32 @@ class Province:
     def __tour_months(self, holiday):
         result = []
         for m in months():
+            div_id = f"wrap{m.capitalize()}"
+            div = self._soup.find(id=div_id)
+            # find the div with class "wrapFestivos"
+            div_wrap_festivos = div.find('div', { 'class' : 'wrapFestivos'})
             table_id = f"mes{m.title()}"
             table = self._soup.find(id=table_id)
             holidays = table.findAll("td", {"class": f"cajaFestivo{holiday}"})
+            description = ''
             for h in holidays:
+                if div_wrap_festivos:
+                    # Find all li elements inside div
+                    lis = div_wrap_festivos.find_all('li')
+                    lis_holidays = []
+                    for li in lis:
+                        # Chose those with a span element with class "festivoX"
+                        span_found = li.find_all('span', { 'class' : f'festivo{holiday}' })
+                        if span_found and len(span_found) == 1:
+                            # Get the description after the '.'
+                            lis_holidays.append(li.get_text().replace(span_found[0].string,''))
+                    description = lis_holidays[holidays.index(h)]
                 day = int(h.get_text())
                 month = months().index(m) + 1
                 date = datetime.date(day=day, month=month, year=self.year)
-                result.append(date)
+
+                result.append({ 'date': date, 'description': description})
+
         return result
 
     def national_holidays(self) -> list:
