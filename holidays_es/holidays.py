@@ -61,7 +61,7 @@ class Province:
                         # Chose those with a span element with class "festivoX"
                         span_found = li.find_all('span', { 'class' : f'festivo{holiday}' })
                         if span_found and len(span_found) == 1:
-                            # Get the description after the '.'
+                            # Get only the description
                             lis_holidays.append(li.get_text().replace(span_found[0].string,''))
                     description = lis_holidays[holidays.index(h)]
                 day = int(h.get_text())
