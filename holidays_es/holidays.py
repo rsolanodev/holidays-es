@@ -53,17 +53,7 @@ class Province:
             holidays = table.findAll("td", {"class": f"cajaFestivo{holiday}"})
             description = ''
             for h in holidays:
-                if div_wrap_festivos:
-                    # Find all li elements inside div
-                    lis = div_wrap_festivos.find_all('li')
-                    lis_holidays = []
-                    for li in lis:
-                        # Chose those with a span element with class "festivoX"
-                        span_found = li.find_all('span', { 'class' : f'festivo{holiday}' })
-                        if span_found and len(span_found) == 1:
-                            # Get only the description
-                            lis_holidays.append(li.get_text().replace(span_found[0].string,''))
-                    description = lis_holidays[holidays.index(h)]
+                description = get_description(div_wrap_festivos, holidays.index(h), holiday)
                 day = int(h.get_text())
                 month = months().index(m) + 1
                 date = datetime.date(day=day, month=month, year=self.year)
@@ -87,7 +77,21 @@ class Province:
             "regional_holidays": self.regional_holidays(),
             "local_holidays": self.local_holidays(),
         }
+        
+def get_description(div_wrap_festivos, index, holiday):
+    if div_wrap_festivos:
+        # Find all li elements inside div
+        lis = div_wrap_festivos.find_all('li')
+        lis_holidays = []
+        for li in lis:
+            # Chose those with a span element with class "festivoX"
+            span_found = li.find_all('span', { 'class' : f'festivo{holiday}' })
+            if span_found and len(span_found) == 1:
+                lis_holidays.append(li.get_text().replace(span_found[0].string,''))
+                
+        return lis_holidays[index]
 
+    return ''
 
 def months() -> tuple:
     return (
