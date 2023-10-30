@@ -1,5 +1,9 @@
-from holidays_es.holidays import get_provinces, Province
+from typing import Sequence
 
-__version__ = "1.0.0"
-__author__ = "Rubén Solano <rubensoljim@gmail.com>"
-__all__ = [get_provinces(), Province]
+from holidays_es.enums import Province, Scope
+from holidays_es.holidays import HolidaySpain
+
+
+__version__: str = "1.0.0"
+__author__: str = "Rubén Solano <rubensoljim@gmail.com>"
+__all__: Sequence[str] = ["HolidaySpain", "Province", "Scope"]

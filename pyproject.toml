@@ -1,0 +1,73 @@
+[tool.poetry]
+name = "holidays-es"
+version = "1.0.0"
+description = "Public holidays in Spain from 2006 to now"
+authors = ["rsolanodev <rubensoljim@gmail.com>"]
+readme = "README.rst"
+license = "MIT"
+homepage = "https://github.com/rsolanodev/holidays-es"
+packages = [
+    { include = "holidays_es" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.31.0"
+beautifulsoup4 = "^4.12.2"
+attrs = "^23.1.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.10.1"
+mypy = "^1.6.1"
+types-requests = "^2.31.0.10"
+pytest = "^7.4.3"
+ruff = "^0.1.3"
+
+[tool.ruff]
+select = [
+    "E",  # pycodestyle
+    "F",  # pyflakes
+    "I",  # isort
+]
+ignore = ["E501"]
+
+[tool.ruff.isort]
+lines-after-imports = 2
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "project",
+    "local-folder",
+]
+
+[tool.ruff.isort.sections]
+"project" = ["brickpioneer"]
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | node_modules
+)/
+'''
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

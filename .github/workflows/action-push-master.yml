@@ -1,0 +1,12 @@
+name: Action - Push master
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  lint_and_test:
+    uses: ./.github/workflows/lint-and-test.yml
+    with:
+      project: holidays_es

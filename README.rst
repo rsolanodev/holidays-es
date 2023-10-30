@@ -17,7 +17,7 @@ Once we have the name we can create our province object to obtain the holidays.
 
 .. code-block:: python
 
-    from holidays_es import get_provinces, Province
+    from holidays_es import get_provinces, HolidaySpain
 
     provinces = get_provinces()
     print(provinces)
@@ -31,13 +31,13 @@ This code returns in a list all the available provinces.
 
 
 With the names that we have available we can find out the holidays. We must indicate a
-name to the Province object and the year if not indicated will use the current year.
+name to the HolidaySpain object and the year if not indicated will use the current year.
 
 .. code-block:: python
 
-    from holidays_es import Province
+    from holidays_es import HolidaySpain
 
-    holidays = Province(name="valencia", year=2018).holidays()
+    holidays = HolidaySpain(province="valencia", year=2018).holidays()
     print(holidays)
 
 This code returns in a dictionary the types of holidays in Spain with the dates.
@@ -46,7 +46,7 @@ This code returns in a dictionary the types of holidays in Spain with the dates.
 
     >>> python app.py
     {
-        'national_holidays': [datetime.date(2018, 1, 1), datetime.date(2018, 1, 6), datetime.date(2018, 3, 30), datetime.date(2018, 5, 1), datetime.date(2018, 8, 15), datetime.date(2018, 10, 12), datetime.date(2018, 11, 1), datetime.date(2018, 12, 6), datetime.date(2018, 12, 8), datetime.date(2018, 12, 25)],
+        'national_holidays()': [datetime.date(2018, 1, 1), datetime.date(2018, 1, 6), datetime.date(2018, 3, 30), datetime.date(2018, 5, 1), datetime.date(2018, 8, 15), datetime.date(2018, 10, 12), datetime.date(2018, 11, 1), datetime.date(2018, 12, 6), datetime.date(2018, 12, 8), datetime.date(2018, 12, 25)],
         'regional_holidays': [datetime.date(2018, 3, 19), datetime.date(2018, 4, 2), datetime.date(2018, 10, 9)],
         'local_holidays': [datetime.date(2018, 1, 22), datetime.date(2018, 4, 9)]
     }
@@ -55,10 +55,8 @@ We can also directly obtain national, regional or local holidays. And it will re
 
 .. code-block:: python
 
-    from holidays_es import Province
+    from holidays_es import HolidaySpain
 
-    Province(name="valencia").national_holidays()
-    Province(name="barcelona").regional_holidays()
-    Province(name="madrid").local_holidays()
-
-
+    HolidaySpain(province="valencia").national_holidays()
+    HolidaySpain(province="barcelona").regional_holidays()
+    HolidaySpain(province="madrid").local_holidays()
