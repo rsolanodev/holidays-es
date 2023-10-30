@@ -147,3 +147,12 @@ class HolidaySpain:
         Tuple of local holidays.
         """
         return self._filter_by_scope(enums.Scope.LOCAL)
+
+    def find(self, date: datetime.date) -> models.Holiday | None:
+        """
+        Find the holiday from the date.
+        """
+        for holiday in self.holidays:
+            if date == holiday.date:
+                return holiday
+        return None

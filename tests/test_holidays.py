@@ -69,3 +69,13 @@ def test_year_below_minimum():
 def test_year_above_maximum():
     with pytest.raises(exceptions.YearError):
         HolidaySpain(province=enums.Province.VALENCIA, year=2021, max_year=2020)
+
+
+def test_find_holiday(holiday_spain):
+    holiday_date = datetime.date(day=1, month=1, year=2020)
+    expected_holiday = models.Holiday(
+        scope=enums.Scope.NATIONAL,
+        date=holiday_date,
+        description="Año nuevo",
+    )
+    assert expected_holiday == holiday_spain.find(date=holiday_date)

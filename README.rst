@@ -1,62 +1,76 @@
+===========
 Holidays ES
 ===========
+
 A small Python package to obtain the public holidays in Spain from 2006 to the current year.
-This application uses the web scraping technique to obtain the data from `calendarioslaborales.net <https://www.calendarioslaborales.com/>`_
+This application uses the web scraping technique to obtain the data from
+`calendarioslaborales.net <https://www.calendarioslaborales.com/>`_
 
-Installation
-------------
-::
+Made with Python with ❤️
 
-    pip install holidays-es
+:Package:
+    .. image:: https://img.shields.io/pypi/pyversions/holidays-es.svg?logo=python&label=Python&logoColor=gold
+        :target: https://pypi.python.org/pypi/holidays-es
+        :alt: Python supported versions
 
-Usage
------
+    .. image:: http://img.shields.io/pypi/v/holidays-es.svg?logo=pypi&label=PyPI&logoColor=gold
+        :target: https://pypi.python.org/pypi/holidays-es
+        :alt: PyPI version
 
-We can get a list of all available provinces, **which include some municipalities**.
-Once we have the name we can create our province object to obtain the holidays.
+    .. image:: https://img.shields.io/pypi/dm/holidays-es.svg?color=blue&label=Downloads&logo=pypi&logoColor=gold
+        :target: https://pypi.python.org/pypi/holidays-es
+        :alt: Downloads
 
-.. code-block:: python
+:CI/CD:
+    .. image:: https://github.com/vacanza/python-holidays-es/workflows/CI%2FCD/badge.svg
+        :target: actions
 
-    from holidays_es import get_provinces, HolidaySpain
+:Meta:
+    .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+        :alt: Code style
 
-    provinces = get_provinces()
-    print(provinces)
+    .. image:: http://img.shields.io/pypi/l/holidays-es.svg
+        :target: LICENSE
+        :alt: License
 
-This code returns in a list all the available provinces.
+Install
+-------
+Install via pip:
 
-::
+.. code-block:: shell
 
-    >>> python app.py
-    ['alava', 'albacete', 'alicante', 'almeria', 'asturias', 'avila', 'badajoz', 'baleares', 'barcelona', 'bilbao', 'burgos', 'caceres', 'cadiz', 'cantabria', 'castellon', 'ceuta', 'ciudad-real', 'cordoba', 'la-coruna', 'cuenca', 'gijon', 'girona', 'granada', 'guadalajara', 'guipuzcoa', 'huelva', 'huesca', 'jaen', 'leon', 'lleida', 'logrono', 'lugo', 'madrid', 'malaga', 'melilla', 'murcia', 'navarra', 'ourense', 'oviedo', 'palencia', 'palma-de-mallorca', 'las-palmas', 'pamplona', 'pontevedra', 'la-rioja', 'salamanca', 'san-sebastian', 'santander', 'segovia', 'sevilla', 'soria', 'tarragona', 'tenerife', 'teruel', 'toledo', 'valencia', 'valladolid', 'vitoria', 'vizcaya', 'zamora', 'zaragoza']
+    $ pip install holidays-es
 
-
-With the names that we have available we can find out the holidays. We must indicate a
-name to the HolidaySpain object and the year if not indicated will use the current year.
-
-.. code-block:: python
-
-    from holidays_es import HolidaySpain
-
-    holidays = HolidaySpain(province="valencia", year=2018).holidays()
-    print(holidays)
-
-This code returns in a dictionary the types of holidays in Spain with the dates.
-
-::
-
-    >>> python app.py
-    {
-        'national_holidays()': [datetime.date(2018, 1, 1), datetime.date(2018, 1, 6), datetime.date(2018, 3, 30), datetime.date(2018, 5, 1), datetime.date(2018, 8, 15), datetime.date(2018, 10, 12), datetime.date(2018, 11, 1), datetime.date(2018, 12, 6), datetime.date(2018, 12, 8), datetime.date(2018, 12, 25)],
-        'regional_holidays': [datetime.date(2018, 3, 19), datetime.date(2018, 4, 2), datetime.date(2018, 10, 9)],
-        'local_holidays': [datetime.date(2018, 1, 22), datetime.date(2018, 4, 9)]
-    }
-
-We can also directly obtain national, regional or local holidays. And it will return the result in a list
+Quick Start
+-----------
+1.  Import the HolidaySpain class and set the province and year of the holidays you want to obtain.
 
 .. code-block:: python
 
-    from holidays_es import HolidaySpain
+    from datetime import date
+    from holidays_es import Province, HolidaySpain, Scope
 
-    HolidaySpain(province="valencia").national_holidays()
-    HolidaySpain(province="barcelona").regional_holidays()
-    HolidaySpain(province="madrid").local_holidays()
+    holiday_spain = HolidaySpain(province=Province.VALENCIA, year=2022)
+
+    holiday_date = date(day=1, month=1, year=2022)
+    expected_holiday = models.Holiday(
+        scope=Scope.NATIONAL,
+        date=holiday_date,
+        description="Año nuevo",
+    )
+
+    assert expected_holiday == holiday_spain.find(date=holiday_date)
+
+
+2. If you only need the national, regional, or local holidays, you can also obtain them in the following way:
+
+.. code-block:: python
+
+    from holidays_es import Province, HolidaySpain
+
+    holiday_spain = HolidaySpain(province=Province.MADRID, year=2020)
+
+    for holiday in holiday_spain.national:
+        holiday.scope  # <Scope.NATIONAL: 'national'>
+        holiday.date  # datetime.date(2023, 1, 1)
+        holiday.description  # Año nuevo
