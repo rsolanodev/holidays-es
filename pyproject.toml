@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "holidays-es"
-version = "1.0.0"
+version = "2.0.0"
 description = "Public holidays in Spain from 2006 to now"
 authors = ["rsolanodev <rubensoljim@gmail.com>"]
 readme = "README.rst"
