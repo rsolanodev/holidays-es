@@ -22,7 +22,7 @@ Made with Python with ❤️
         :alt: Downloads
 
 :CI/CD:
-    .. image:: https://github.com/vacanza/python-holidays-es/workflows/CI%2FCD/badge.svg
+    .. image:: https://github.com/rsolanodev/holidays-es/actions/workflows/action-push-develop.yml/badge.svg
         :target: actions
 
 :Meta:
