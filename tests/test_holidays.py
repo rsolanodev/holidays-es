@@ -2,7 +2,7 @@ import datetime
 
 import pytest
 
-from holidays_es import HolidaySpain, enums, exceptions, models
+from holidays_es import HolidaySpain, enums, exceptions, holiday
 
 
 @pytest.fixture
@@ -11,7 +11,7 @@ def holiday_spain():
 
 
 def test_national_holidays(holiday_spain):
-    expected_holiday = models.Holiday(
+    expected_holiday = holiday.Holiday(
         scope=enums.Scope.NATIONAL,
         date=datetime.date(day=12, month=10, year=holiday_spain.year),
         description="Fiesta Nacional Española",
@@ -23,7 +23,7 @@ def test_national_holidays(holiday_spain):
 
 
 def test_regional_holidays(holiday_spain):
-    expected_holiday = models.Holiday(
+    expected_holiday = holiday.Holiday(
         scope=enums.Scope.REGIONAL,
         date=datetime.date(day=9, month=10, year=holiday_spain.year),
         description="Día de la Comunidad Valenciana",
@@ -35,7 +35,7 @@ def test_regional_holidays(holiday_spain):
 
 
 def test_local_holidays(holiday_spain):
-    expected_holiday = models.Holiday(
+    expected_holiday = holiday.Holiday(
         scope=enums.Scope.LOCAL,
         date=datetime.date(day=20, month=4, year=holiday_spain.year),
         description="San Vicente Ferrer",
@@ -73,7 +73,7 @@ def test_year_above_maximum():
 
 def test_find_holiday(holiday_spain):
     holiday_date = datetime.date(day=1, month=1, year=2020)
-    expected_holiday = models.Holiday(
+    expected_holiday = holiday.Holiday(
         scope=enums.Scope.NATIONAL,
         date=holiday_date,
         description="Año nuevo",

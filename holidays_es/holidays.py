@@ -1,10 +1,11 @@
+from dataclasses import dataclass
 import datetime
 import logging
 
 import requests
 from bs4 import BeautifulSoup, Tag
 
-from holidays_es import enums, exceptions, models
+from holidays_es import enums, exceptions, holiday
 
 
 logger = logging.getLogger(__name__)
@@ -48,7 +49,7 @@ class HolidaySpain:
 
         self.province: str = self._validate_province(province)
         self.year: int = self._validate_year(year)
-        self.holidays: tuple[models.Holiday, ...] = self._fetch_holidays()
+        self.holidays: tuple[holiday.Holiday, ...] = self._fetch_holidays()
 
     def _validate_year(self, year: int | None = None) -> int:
         year = year or datetime.datetime.now().year
@@ -65,7 +66,7 @@ class HolidaySpain:
             )
         return province.value
 
-    def _fetch_holidays(self) -> tuple[models.Holiday, ...]:
+    def _fetch_holidays(self) -> tuple[holiday.Holiday, ...]:
         """
         Fetch holidays for the province and year.
         """
@@ -88,7 +89,7 @@ class HolidaySpain:
                 "consider updating to the latest version of the package."
             )
 
-    def _parse_holidays(self, soup: BeautifulSoup) -> tuple[models.Holiday, ...]:
+    def _parse_holidays(self, soup: BeautifulSoup) -> tuple[holiday.Holiday, ...]:
         """
         Parse holidays from the BeautifulSoup object.
         """
@@ -106,7 +107,7 @@ class HolidaySpain:
         """
         return self.months.index(month_name) + 1
 
-    def _parse_holiday_tag(self, holiday_tag: Tag, month_idx: int) -> models.Holiday:
+    def _parse_holiday_tag(self, holiday_tag: Tag, month_idx: int) -> holiday.Holiday:
         """
         Parse a holiday tag to extract the holiday information.
         """
@@ -119,36 +120,36 @@ class HolidaySpain:
 
         date = datetime.date(day=day_number, month=month_idx, year=self.year)
         scope: enums.Scope = self.scope_mappings[holiday_key]
-        return models.Holiday(scope=scope, date=date, description=description)  # type: ignore
+        return holiday.Holiday(scope=scope, date=date, description=description)  # type: ignore
 
-    def _filter_by_scope(self, scope: enums.Scope) -> tuple[models.Holiday, ...]:
+    def _filter_by_scope(self, scope: enums.Scope) -> tuple[holiday.Holiday, ...]:
         """
         Filter holidays based on their scope.
         """
         return tuple(filter(lambda holiday: holiday.scope == scope, self.holidays))
 
     @property
-    def national(self) -> tuple[models.Holiday, ...]:
+    def national(self) -> tuple[holiday.Holiday, ...]:
         """
         Tuple of national holidays.
         """
         return self._filter_by_scope(enums.Scope.NATIONAL)
 
     @property
-    def regional(self) -> tuple[models.Holiday, ...]:
+    def regional(self) -> tuple[holiday.Holiday, ...]:
         """
         Tuple of regional holidays.
         """
         return self._filter_by_scope(enums.Scope.REGIONAL)
 
     @property
-    def local(self) -> tuple[models.Holiday, ...]:
+    def local(self) -> tuple[holiday.Holiday, ...]:
         """
         Tuple of local holidays.
         """
         return self._filter_by_scope(enums.Scope.LOCAL)
 
-    def find(self, date: datetime.date) -> models.Holiday | None:
+    def find(self, date: datetime.date) -> holiday.Holiday | None:
         """
         Find the holiday from the date.
         """

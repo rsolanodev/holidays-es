@@ -1,7 +1,9 @@
-from enum import Enum
 
 
-class Province(Enum):
+from enum import StrEnum
+
+
+class Province(StrEnum):
     ALAVA = "alava"
     ALBACETE = "albacete"
     ALICANTE = "alicante"
@@ -63,9 +65,3 @@ class Province(Enum):
     VIZCAYA = "vizcaya"
     ZAMORA = "zamora"
     ZARAGOZA = "zaragoza"
-
-
-class Scope(Enum):
-    NATIONAL = "national"
-    REGIONAL = "regional"
-    LOCAL = "local"
