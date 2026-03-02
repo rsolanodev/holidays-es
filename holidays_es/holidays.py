@@ -31,9 +31,9 @@ class HolidaySpain:
         "Diciembre",
     )
     scope_mappings: dict[str, enums.Scope] = {
-        "festivoN": enums.Scope.NATIONAL,
-        "festivoR": enums.Scope.REGIONAL,
-        "festivoP": enums.Scope.LOCAL,
+        "national": enums.Scope.NATIONAL,
+        "regional": enums.Scope.REGIONAL,
+        "local": enums.Scope.LOCAL,
     }
 
     def __init__(
@@ -93,8 +93,8 @@ class HolidaySpain:
         Parse holidays from the BeautifulSoup object.
         """
         holidays = []
-        for month_tag in soup.find_all("div", class_="mes"):
-            month_idx = self._get_month_index(month_tag.h3.text)
+        for month_tag in soup.find_all("div", class_="month"):
+            month_idx = self._get_month_index(month_tag.find("div", class_="month-name").text)
             for holiday_tag in month_tag.find_all("li"):
                 holiday = self._parse_holiday_tag(holiday_tag, month_idx)
                 holidays.append(holiday)
@@ -112,10 +112,10 @@ class HolidaySpain:
         """
         date_tag = holiday_tag.find("span")
         holiday_key = date_tag["class"][0]
-        day_number = int(date_tag.text.split(" ")[0])
+        day_number = int(date_tag.text.strip().split(" ")[0])
 
         holiday_tag.span.extract()
-        description = holiday_tag.text.strip()
+        description = holiday_tag.text.replace("–","").strip()
 
         date = datetime.date(day=day_number, month=month_idx, year=self.year)
         scope: enums.Scope = self.scope_mappings[holiday_key]
